@@ -11,7 +11,15 @@ namespace NeuralNetNet.Layers
 
         public override void Process()
         {
-            // Normalize: 1 / inputs
+            foreach (Neuron n in this.Neurons)
+                n.Value = Normalize(n.Value);
+        }
+
+        public double Normalize(double value)
+        {
+            if (value == 0)
+                return 0;
+            return 1.0 / value;
         }
     }
 }

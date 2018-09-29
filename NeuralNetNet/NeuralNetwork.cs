@@ -29,8 +29,8 @@ namespace NeuralNetNet
             HiddenLayer.NextLayer = OutputLayer;
         }
 
-        public void Train(List<XorTrainSet> trainSetList, int maxEpoch
-            , double learningRate = 10
+        public void Train(List<TrainSet> trainSetList, int maxEpoch
+            , double learningRate = 1
             , double moment = 1)
         {
             double[] idealOutputs = trainSetList.Select(t => t.Output).ToArray();
@@ -80,7 +80,7 @@ namespace NeuralNetNet
                             hiddenNeuron.SynapsesWeights[sw] += prevNeuronValue * hiddenNeuron.Delta * learningRate;
                         }
 
-
+                       
                     }
 
 
@@ -98,7 +98,7 @@ namespace NeuralNetNet
                         outNeuron.SynapsesWeights[s] += diff; 
                     }
 
-                    this.ClearDeltas();
+                    if (ts % 50000 ==0) Console.WriteLine($"Ep #{ep} | {Math.Abs(error)}");
                 }
 
 
@@ -121,15 +121,6 @@ namespace NeuralNetNet
             OutputLayer.Process();
 
             return OutputLayer.Neurons.Select(n => n.Value).ToArray();
-        }
-
-        public void ClearDeltas()
-        {
-            foreach (Neuron hidden in HiddenLayer)
-                hidden.Delta = 0;
-
-            foreach (Neuron outn in OutputLayer)
-                outn.Delta = 0;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetNet
 {
-    public class XorTrainSet
+    public class TrainSet
     {
         public double[] Input { get; set; } = new double[2];
 

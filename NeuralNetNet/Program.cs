@@ -35,44 +35,40 @@ namespace NeuralNetNet
                 }
             }
 
-            NeuralNetwork net = new NeuralNetwork(2, 1, hiddenCount: 1, hiddenSize: 4);
+            NeuralNetwork net = new NeuralNetwork(2, 1, hiddenCount: 1, hiddenSize: 6);
 
             net.Train(equalTrainList, 15000, learningRate: 1);
 
+            Console.Clear();
+
             Console.WriteLine("Expected 1:");
-            Console.WriteLine(net.Predict(0, 0)[0]);
-            Console.WriteLine(net.Predict(1, 1)[0]);
-            Console.WriteLine(net.Predict(2, 2)[0]);
-            Console.WriteLine(net.Predict(3, 3)[0]);
-            Console.WriteLine(net.Predict(4, 4)[0]);
-            Console.WriteLine(net.Predict(5, 5)[0]);
-            Console.WriteLine(net.Predict(6, 6)[0]);
-            Console.WriteLine(net.Predict(7, 7)[0]);
-            Console.WriteLine(net.Predict(8, 8)[0]);
-            Console.WriteLine(net.Predict(9, 9)[0]);
-            Console.WriteLine(net.Predict(10, 10)[0]);
+            foreach (TrainSet ts in equalTrainList.Where(t => t.Output == 1.0))
+            {
+                Console.WriteLine(net.Predict(ts.Input)[0]);
+            }
+
+            Console.WriteLine("--\nOut of range:");
+            Console.WriteLine(net.Predict(11, 11)[0]);
+            Console.WriteLine(net.Predict(12, 12)[0]);
+            Console.WriteLine(net.Predict(13, 13)[0]);
+            Console.WriteLine(net.Predict(14, 14)[0]);
+            Console.WriteLine(net.Predict(15, 15)[0]);
 
             Console.WriteLine("\nExpected 0:");
-            Console.WriteLine(net.Predict(1, 0)[0]);
-            Console.WriteLine(net.Predict(0, 1)[0]);
-            Console.WriteLine(net.Predict(1, 2)[0]);
-            Console.WriteLine(net.Predict(1, 3)[0]);
-            Console.WriteLine(net.Predict(2, 3)[0]);
-            Console.WriteLine(net.Predict(2, 5)[0]);
-            Console.WriteLine(net.Predict(4, 3)[0]);
-            Console.WriteLine(net.Predict(4, 8)[0]);
+            foreach (TrainSet ts in equalTrainList.Where(t => t.Output == 0.0))
+            {
+                Console.WriteLine(net.Predict(ts.Input)[0]);
+            }
+
+            Console.WriteLine("--\nOut of range:");
+            Console.WriteLine(net.Predict(11, 10)[0]);
+            Console.WriteLine(net.Predict(12, 11)[0]);
+            Console.WriteLine(net.Predict(13, 10)[0]);
+
+            Console.WriteLine(net.Predict(20, 19)[0]);
+            Console.WriteLine(net.Predict(20, 18)[0]);
 
             Console.WriteLine();
-
-            Console.WriteLine("Weights @ Output Layer:");
-            foreach (Neuron n in net.OutputLayer)
-            {
-                foreach (double w in n.SynapsesWeights)
-                {
-                    Console.WriteLine(w.ToString());
-                }
-                Console.WriteLine(@"-------");
-            }
         }
     }
 }

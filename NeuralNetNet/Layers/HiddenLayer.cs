@@ -2,9 +2,7 @@
 {
     public class HiddenLayer : Layer
     {
-        public Layer NextLayer { get; set; }
-
-        public HiddenLayer(int neuronsCount, Layer prev) : base(neuronsCount, prev)
+        public HiddenLayer(int neuronsCount, Layer previous) : base(neuronsCount, previous)
         {
 
         }

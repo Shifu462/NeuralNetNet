@@ -39,9 +39,14 @@ namespace NeuralNetNet.Layers
         public IEnumerator GetEnumerator() => ((IEnumerable)this.Neurons).GetEnumerator();
 
         /// <summary>
-        /// Pointer to a previous layer in the network.
+        /// Pointer to the previous layer in the network.
         /// </summary>
         public Layer PreviousLayer { get; protected set; }
+
+        /// <summary>
+        /// Pointer to the next layer in the network.
+        /// </summary>
+        public Layer NextLayer { get; set; }
 
         public Layer(int neuronsCount, Layer previous)
         {

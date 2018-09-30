@@ -5,7 +5,7 @@ namespace NeuralNetNet.Layers
     {
         public InputLayer(int neuronsCount) : base(neuronsCount, null)
         {
-
+            
         }
 
 

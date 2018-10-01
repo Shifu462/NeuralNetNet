@@ -43,10 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Layers\HiddenLayer.cs" />
     <Compile Include="Layers\InputLayer.cs" />
     <Compile Include="Layers\Layer.cs" />
-    <Compile Include="Layers\OutputLayer.cs" />
     <Compile Include="Perceptron.cs" />
     <Compile Include="Neuron.cs" />
     <Compile Include="Program.cs" />

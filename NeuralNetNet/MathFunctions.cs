@@ -32,5 +32,12 @@ namespace NeuralNetNet
 
             return sum / actual.Length;
         }
+
+        public static double Normalize(double value)
+        {
+            if (value == 0)
+                return 0;
+            return 1.0 / value;
+        }
     }
 }

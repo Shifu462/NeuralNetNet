@@ -9,7 +9,7 @@ namespace NeuralNetNet
     {
         public InputLayer InputLayer { get; protected set; }
 
-        public OutputLayer OutputLayer { get; protected set; }
+        public Layer OutputLayer { get; protected set; }
 
         public Perceptron(int inputSize, int outputSize, int hiddenCount = 0, int hiddenSize = 0)
         {
@@ -18,11 +18,11 @@ namespace NeuralNetNet
             Layer currentLayer = InputLayer;
             for (int i = 0; i < hiddenCount; i++)
             {
-                currentLayer.NextLayer = new HiddenLayer(hiddenSize, previous: currentLayer);
+                currentLayer.NextLayer = new Layer(hiddenSize, previous: currentLayer);
                 currentLayer = currentLayer.NextLayer;
             }
 
-            OutputLayer = new OutputLayer(outputSize, previous: currentLayer);
+            OutputLayer = new Layer(outputSize, previous: currentLayer);
             currentLayer.NextLayer = OutputLayer;
         }
 
@@ -106,7 +106,7 @@ namespace NeuralNetNet
                 throw new ArgumentException();
 
             for (int i = 0; i < inputs.Length; i++)
-                InputLayer[i].Value = inputs[i];
+                InputLayer[i].Value = MathFunctions.Normalize(inputs[i]);
 
             Layer currentWorkingLayer = InputLayer;
             do

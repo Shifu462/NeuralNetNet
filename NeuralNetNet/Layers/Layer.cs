@@ -6,7 +6,7 @@ namespace NeuralNetNet.Layers
     /// <summary>
     /// Abstract model of a layer.
     /// </summary>
-    public abstract class Layer : IEnumerable
+    public class Layer : IEnumerable
     {
         /// <summary>
         /// Neurons inside of this layer.

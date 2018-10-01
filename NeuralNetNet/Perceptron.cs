@@ -5,13 +5,13 @@ using NeuralNetNet.Layers;
 
 namespace NeuralNetNet
 {
-    public class NeuralNetwork
+    public class Perceptron
     {
         public InputLayer InputLayer { get; protected set; }
 
         public OutputLayer OutputLayer { get; protected set; }
 
-        public NeuralNetwork(int inputSize, int outputSize, int hiddenCount = 0, int hiddenSize = 0)
+        public Perceptron(int inputSize, int outputSize, int hiddenCount = 0, int hiddenSize = 0)
         {
             InputLayer = new InputLayer(inputSize);
 
@@ -88,11 +88,7 @@ namespace NeuralNetNet
                         for (int s = 0; s < outNeuron.SynapsesWeights.Length; s++)
                         {
                             double prevNeuronValue = OutputLayer.PreviousLayer[s].Value;
-                            double grad = prevNeuronValue * outNeuron.Delta;
-
-                            double diff = grad * learningRate; // + moment * alpha * dW (???)
-
-                            outNeuron.SynapsesWeights[s] += diff;
+                            outNeuron.SynapsesWeights[s] += prevNeuronValue * outNeuron.Delta * learningRate;
                         }
                     }
 

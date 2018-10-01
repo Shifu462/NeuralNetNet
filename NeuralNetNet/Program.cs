@@ -35,7 +35,7 @@ namespace NeuralNetNet
                 }
             }
 
-            NeuralNetwork net = new NeuralNetwork(2, 1, hiddenCount: 1, hiddenSize: 6);
+            Perceptron net = new Perceptron(2, 1, hiddenCount: 2, hiddenSize: 12);
 
             net.Train(equalTrainList, 15000, learningRate: 1);
 
@@ -43,9 +43,7 @@ namespace NeuralNetNet
 
             Console.WriteLine("Expected 1:");
             foreach (TrainSet ts in equalTrainList.Where(t => t.Output == 1.0))
-            {
                 Console.WriteLine(net.Predict(ts.Input)[0]);
-            }
 
             Console.WriteLine("--\nOut of range:");
             Console.WriteLine(net.Predict(11, 11)[0]);
@@ -56,9 +54,7 @@ namespace NeuralNetNet
 
             Console.WriteLine("\nExpected 0:");
             foreach (TrainSet ts in equalTrainList.Where(t => t.Output == 0.0))
-            {
                 Console.WriteLine(net.Predict(ts.Input)[0]);
-            }
 
             Console.WriteLine("--\nOut of range:");
             Console.WriteLine(net.Predict(11, 10)[0]);

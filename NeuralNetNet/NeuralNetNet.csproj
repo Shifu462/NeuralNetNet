@@ -47,7 +47,7 @@
     <Compile Include="Layers\InputLayer.cs" />
     <Compile Include="Layers\Layer.cs" />
     <Compile Include="Layers\OutputLayer.cs" />
-    <Compile Include="NeuralNetwork.cs" />
+    <Compile Include="Perceptron.cs" />
     <Compile Include="Neuron.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

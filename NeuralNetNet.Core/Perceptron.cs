@@ -91,7 +91,7 @@ namespace NeuralNetNet
                         }
                     }
 
-                    if (ts % 50000 == 0) Console.WriteLine($"Ep #{ep} | {Math.Abs(error)}");
+                    if (ts == 0 && ep % 500 == 0) Console.WriteLine($"Ep #{ep} | {Math.Abs(error)}");
                 }
 
 

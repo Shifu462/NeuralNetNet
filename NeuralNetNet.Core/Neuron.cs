@@ -4,19 +4,13 @@ namespace NeuralNetNet
 {
     public class Neuron
     {
-        protected double _value;
-
-        public double Value
-        {
-            get => _value;
-            set => _value = value;
-        }
+        public double Value { get; set; }
 
         public double Delta { get; set; }
 
         public void SetValueWithSigmoid(double value)
         {
-            this._value = MathFunctions.ApproxSigmoid(value);
+            this.Value = MathFunctions.ApproxSigmoid(value);
         }
 
         public double[] SynapsesWeights { get; set; }
@@ -29,8 +23,7 @@ namespace NeuralNetNet
 
             for (int i = 0; i < synapseCount; i++)
                 SynapsesWeights[i] = rnd.NextDouble();
+                // SynapsesWeights[i] = 0;
         }
-
-        
     }
 }

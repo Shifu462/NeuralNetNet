@@ -1,23 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace NeuralNetNet
+namespace NeuralNetNet.Examples
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Random rnd = new Random();
-
-            var xorTrainList = new List<TrainSet>();
-
-            xorTrainList.Add(new TrainSet { Input = new double[] { 0.0, 1.0 }, Output = 1.0 });
-            xorTrainList.Add(new TrainSet { Input = new double[] { 1.0, 0.0 }, Output = 1.0 });
-
-            xorTrainList.Add(new TrainSet { Input = new double[] { 0.0, 0.0 }, Output = 0.0 });
-            xorTrainList.Add(new TrainSet { Input = new double[] { 1.0, 1.0 }, Output = 0.0 });
-
             var equalTrainList = new List<TrainSet>();
 
             // Add numbers
@@ -35,9 +27,9 @@ namespace NeuralNetNet
                 }
             }
 
-            Perceptron net = new Perceptron(2, 1, hiddenCount: 2, hiddenSize: 12);
+            Perceptron net = new Perceptron(2, 1, hiddenCount: 12, hiddenSize: 12);
 
-            net.Train(equalTrainList, 15000, learningRate: 1);
+            net.Train(equalTrainList, 100000, learningRate: 1);
 
             Console.Clear();
 
@@ -52,9 +44,11 @@ namespace NeuralNetNet
             Console.WriteLine(net.Predict(14, 14)[0]);
             Console.WriteLine(net.Predict(15, 15)[0]);
 
+
             Console.WriteLine("\nExpected 0:");
             foreach (TrainSet ts in equalTrainList.Where(t => t.Output == 0.0))
                 Console.WriteLine(net.Predict(ts.Input)[0]);
+
 
             Console.WriteLine("--\nOut of range:");
             Console.WriteLine(net.Predict(11, 10)[0]);
@@ -64,7 +58,7 @@ namespace NeuralNetNet
             Console.WriteLine(net.Predict(20, 19)[0]);
             Console.WriteLine(net.Predict(20, 18)[0]);
 
-            Console.WriteLine();
+            Console.ReadKey();
         }
     }
 }

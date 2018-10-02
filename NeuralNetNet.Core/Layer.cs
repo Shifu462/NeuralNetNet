@@ -11,14 +11,14 @@ namespace NeuralNetNet
         /// <summary>
         /// Neurons inside of this layer.
         /// </summary>
-        public List<Neuron> Neurons { get; set; } = new List<Neuron>();
+        public Neuron[] Neurons { get; protected set; }
 
         public Neuron this[int index]
         {
             get => Neurons[index];
         }
 
-        public long Count => Neurons.Count;
+        public long Count => Neurons.Length;
 
         /// <summary>
         /// Fill neurons on this layer with calculated values.
@@ -36,13 +36,13 @@ namespace NeuralNetNet
             }
         }
 
-        public IEnumerator GetEnumerator() => ((IEnumerable)this.Neurons).GetEnumerator();
+        public IEnumerator GetEnumerator() => this.Neurons.GetEnumerator();
 
         /// <summary>
         /// Pointer to the previous layer in the network.
         /// </summary>
         public Layer PreviousLayer { get; protected set; }
-
+        
         /// <summary>
         /// Pointer to the next layer in the network.
         /// </summary>
@@ -50,13 +50,15 @@ namespace NeuralNetNet
 
         public Layer(int neuronsCount, Layer previous)
         {
+            Neurons = new Neuron[neuronsCount];
+
             PreviousLayer = previous;
 
             // Check if no synapses behind this layer (input layer check)
             long synapseCount = PreviousLayer != null ? PreviousLayer.Count : 0;
 
             for (int i = 0; i < neuronsCount; i++)
-                Neurons.Add(new Neuron(synapseCount));
+                Neurons[i] = new Neuron(synapseCount);
         }
 
 

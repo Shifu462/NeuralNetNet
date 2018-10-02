@@ -2,8 +2,16 @@
 
 namespace NeuralNetNet
 {
+    /// <summary>
+    /// Extension class for math functions.
+    /// </summary>
     internal class MathFunctions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x">Math function argument.</param>
+        /// <returns></returns>
         public static double ApproxSigmoid(double x)
         {
             double exp = ApproxExp(-x);

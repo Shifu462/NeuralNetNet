@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Layers\InputLayer.cs" />
     <Compile Include="Layers\Layer.cs" />
     <Compile Include="Perceptron.cs" />
     <Compile Include="Neuron.cs" />

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace NeuralNetNet.Layers
+namespace NeuralNetNet
 {
     /// <summary>
     /// Abstract model of a layer.

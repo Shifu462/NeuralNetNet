@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NeuralNetNet.Layers;
 
 namespace NeuralNetNet
 {
     public class Perceptron
     {
-        public InputLayer InputLayer { get; protected set; }
+        public Layer InputLayer { get; protected set; }
 
         public Layer OutputLayer { get; protected set; }
 
         public Perceptron(int inputSize, int outputSize, int hiddenCount = 0, int hiddenSize = 0)
         {
-            InputLayer = new InputLayer(inputSize);
+            InputLayer = new Layer(inputSize, null);
 
             Layer currentLayer = InputLayer;
             for (int i = 0; i < hiddenCount; i++)
@@ -108,7 +107,7 @@ namespace NeuralNetNet
             for (int i = 0; i < inputs.Length; i++)
                 InputLayer[i].Value = MathFunctions.Normalize(inputs[i]);
 
-            Layer currentWorkingLayer = InputLayer;
+            Layer currentWorkingLayer = InputLayer.NextLayer;
             do
             {
                 currentWorkingLayer.Process();

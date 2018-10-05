@@ -46,8 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivationFunctions\IActivation.cs" />
+    <Compile Include="ActivationFunctions\Sigmoid.cs" />
+    <Compile Include="Convolutional.cs" />
     <Compile Include="Layer.cs" />
-    <Compile Include="Perceptron.cs" />
+    <Compile Include="NeuralNetwork\Perceptron.cs" />
     <Compile Include="Neuron.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,5 +60,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NeuralNetNet.NeuralNetwork;
 
 namespace NeuralNetNet
 {
@@ -25,7 +26,7 @@ namespace NeuralNetNet
                 }
             }
 
-            Perceptron net = new Perceptron(2, 1, hiddenCount: 2, hiddenSize: 4);
+            Perceptron net = new Perceptron(2, 1, hiddenCount: 3, hiddenSize: 12);
 
             net.Train(equalTrainList, 15000, learningRate: 1);
 

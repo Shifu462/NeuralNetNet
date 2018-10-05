@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NeuralNetNet
+namespace NeuralNetNet.NeuralNetwork
 {
     public class Perceptron
     {
@@ -37,49 +37,15 @@ namespace NeuralNetNet
                 {
                     TrainSet currentSet = trainSetList[ts];
                     double actual = this.Predict(currentSet.Input)[0];
-
                     double error = currentSet.Output - actual; // ideal - actual
 
                     foreach (Neuron outn in OutputLayer)
-                    {
-                        // delta for output
-                        outn.Delta = error * (outn.Value * (1 - outn.Value)); // value is already sigmoid(x).
-                    }
+                        outn.Delta = error * OutputLayer.Activation.Activate(outn.Value, derivative: true);
 
-                    // foreach Hidden Layer
-                    Layer backpropLayer = OutputLayer.PreviousLayer;
-                    while (backpropLayer != null)
-                    {
-                        // set neurons delta
-                        for (int hi = 0; hi < backpropLayer.Count; hi++)
-                        {
-                            Neuron hiddenNeuron = backpropLayer[hi];
-
-                            // sum of | delta * w
-                            double sum = 0;
-                            foreach (Neuron nextNeuron in backpropLayer.NextLayer)
-                            {
-                                for (int w = 0; w < nextNeuron.SynapsesWeights.Length; w++)
-                                {
-                                    if (hi == w) // find synapse that connects hiddenNeuron with nextNeuron
-                                        sum += nextNeuron.Delta * nextNeuron.SynapsesWeights[w];
-                                }
-
-                            }
-
-                            hiddenNeuron.Delta = sum * (hiddenNeuron.Value * (1 - hiddenNeuron.Value));
-
-                            // change weights
-                            for (int sw = 0; sw < hiddenNeuron.SynapsesWeights.Length; sw++)
-                            {
-                                double prevNeuronValue = backpropLayer.PreviousLayer[sw].Value;
-                                hiddenNeuron.SynapsesWeights[sw] += prevNeuronValue * hiddenNeuron.Delta * learningRate;
-                            }
-                        }
-
-                        // go back
-                        backpropLayer = backpropLayer.PreviousLayer;
-                    }
+                    // train each hidden layer
+                    Layer backpropLayer = OutputLayer;
+                    while ((backpropLayer = backpropLayer.PreviousLayer) != null)
+                        backpropLayer.Train(learningRate, moment);
 
                     // Change OutputLayer weights.
                     foreach (Neuron outNeuron in OutputLayer)
@@ -91,7 +57,7 @@ namespace NeuralNetNet
                         }
                     }
 
-                    if (ts == 0 && ep % 500 == 0) Console.WriteLine($"Ep #{ep} | {Math.Abs(error)}");
+                    if (ts == 0 && ep % 1000 == 0) Console.WriteLine($"Ep #{ep} | {error}");
                 }
 
 

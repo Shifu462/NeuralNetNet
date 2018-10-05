@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="ActivationFunctions\IActivation.cs" />
     <Compile Include="ActivationFunctions\Sigmoid.cs" />
-    <Compile Include="Convolutional.cs" />
+    <Compile Include="NeuralNetwork\Convolutional.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="NeuralNetwork\Perceptron.cs" />
     <Compile Include="Neuron.cs" />

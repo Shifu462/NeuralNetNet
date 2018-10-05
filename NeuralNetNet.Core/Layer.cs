@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using NeuralNetNet.ActivationFunctions;
 
 namespace NeuralNetNet
@@ -13,7 +13,7 @@ namespace NeuralNetNet
         /// <summary>
         /// Neurons inside of this layer.
         /// </summary>
-        public Neuron[] Neurons { get; protected set; }
+        protected Neuron[] Neurons { get; set; }
 
         /// <summary>
         /// Count of neurons in current layer.
@@ -64,6 +64,10 @@ namespace NeuralNetNet
             }
         }
 
+        public double[] GetOutput() => NextLayer == null
+                                     ? Neurons.Select(n => n.Value).ToArray()
+                                     : throw new NullReferenceException("Can't get output from hidden or input layer.");                        
+
         public void Train(double learningRate = 1, double moment = 1)
         {
             // set neurons delta
@@ -111,7 +115,5 @@ namespace NeuralNetNet
 
             }
         }
-
-
     }
 }

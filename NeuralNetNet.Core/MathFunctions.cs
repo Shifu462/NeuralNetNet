@@ -7,8 +7,6 @@ namespace NeuralNetNet
     /// </summary>
     internal class MathFunctions
     {
-        
-
         public static double MSE(double[] calc, double[] actual)
         {
             if (calc.Length != actual.Length)

@@ -4,12 +4,8 @@ using System.Linq;
 
 namespace NeuralNetNet.NeuralNetwork
 {
-    public class Perceptron
+    public class Perceptron : NeuralNetwork
     {
-        public Layer InputLayer { get; protected set; }
-
-        public Layer OutputLayer { get; protected set; }
-
         public Perceptron(int inputSize, int outputSize, int hiddenCount = 0, int hiddenSize = 0)
         {
             InputLayer = new Layer(inputSize, null);
@@ -25,7 +21,7 @@ namespace NeuralNetNet.NeuralNetwork
             currentLayer.NextLayer = OutputLayer;
         }
 
-        public void Train(List<TrainSet> trainSetList, int maxEpoch
+        public override void Train(List<TrainSet> trainSetList, int maxEpoch
             , double learningRate = 1
             , double moment = 1)
         {
@@ -57,7 +53,7 @@ namespace NeuralNetNet.NeuralNetwork
                         }
                     }
 
-                    if (ts == 0 && ep % 1000 == 0) Console.WriteLine($"Ep #{ep} | {error}");
+                    if (ts == 0 && ep % 1000 == 0) Console.WriteLine($"Ep #{ep} | {Math.Abs(error)}");
                 }
 
 
@@ -65,7 +61,7 @@ namespace NeuralNetNet.NeuralNetwork
 
         }
 
-        public double[] Predict(params double[] inputs)
+        public override double[] Predict(params double[] inputs)
         {
             if (inputs.Length != InputLayer.Count)
                 throw new ArgumentException();
@@ -81,7 +77,7 @@ namespace NeuralNetNet.NeuralNetwork
             }
             while (currentWorkingLayer != null); // if null then it's an output layer.
 
-            return OutputLayer.Neurons.Select(n => n.Value).ToArray();
+            return OutputLayer.GetOutput();
         }
     }
 }

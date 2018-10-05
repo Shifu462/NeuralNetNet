@@ -71,7 +71,7 @@ namespace NeuralNetNet
 
         public double[] GetOutput() => NextLayer == null
                                      ? Neurons.Select(n => n.Value).ToArray()
-                                     : throw new NullReferenceException("Can't get output from hidden or input layer.");
+                                     : throw new ArgumentException("Can't get output from hidden or input layer.");
 
         public void Train(double learningRate = 1, double moment = 1)
         {

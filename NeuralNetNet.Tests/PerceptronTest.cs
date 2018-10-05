@@ -21,14 +21,14 @@ namespace NeuralNetNet.Tests
             xorTrainList.Add(new TrainSet { Input = new double[] { 1.0, 1.0 }, Output = 0.0 });
 
             Layer[] hiddenLayers = {
-                new Layer(6, new Sigmoid())
+                new Layer(4, new Sigmoid())
             };
 
             Perceptron net = new Perceptron(new Layer(2, new Sigmoid()), 
                                             hiddenLayers, 
                                             new Layer(1, new Sigmoid()));
 
-            net.Train(xorTrainList, 15000);
+            net.Train(xorTrainList, 5000);
 
             foreach (TrainSet ts in xorTrainList)
             {
@@ -58,10 +58,12 @@ namespace NeuralNetNet.Tests
                     });
                 }
             }
-            /*
-            Perceptron net = new Perceptron(2, 1, hiddenCount: 2, hiddenSize: 4);
 
-            net.Train(equalTrainList, 15000, learningRate: 1);
+            Perceptron net = new Perceptron(new Layer(2, new Sigmoid()),
+                                            new Layer[] { new Layer(4, new Sigmoid()) },
+                                            new Layer(1, new Sigmoid()));
+
+            net.Train(equalTrainList, 10000, learningRate: 1);
 
             foreach (TrainSet ts in equalTrainList)
             {
@@ -70,7 +72,6 @@ namespace NeuralNetNet.Tests
 
                 Assert.AreEqual(ts.Output, roundedResult);
             }
-            */
         }
     }
 }

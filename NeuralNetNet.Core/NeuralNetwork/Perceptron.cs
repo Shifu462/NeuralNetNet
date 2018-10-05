@@ -6,18 +6,26 @@ namespace NeuralNetNet.NeuralNetwork
 {
     public class Perceptron : NeuralNetwork
     {
-        public Perceptron(int inputSize, int outputSize, int hiddenCount = 0, int hiddenSize = 0)
+        public Perceptron(Layer inputLayer, IEnumerable<Layer> hiddenLayers, Layer outputLayer)
         {
-            InputLayer = new Layer(inputSize, null);
+            InputLayer = inputLayer;
+            InputLayer.FillLayer();
 
             Layer currentLayer = InputLayer;
-            for (int i = 0; i < hiddenCount; i++)
+            foreach (Layer layer in hiddenLayers)
             {
-                currentLayer.NextLayer = new Layer(hiddenSize, previous: currentLayer);
-                currentLayer = currentLayer.NextLayer;
+                layer.PreviousLayer = currentLayer;
+                layer.FillLayer();
+                currentLayer.NextLayer = layer;
+
+                if (currentLayer.NextLayer != null)
+                    currentLayer = currentLayer.NextLayer;
             }
 
-            OutputLayer = new Layer(outputSize, previous: currentLayer);
+            outputLayer.PreviousLayer = hiddenLayers.Last();
+            outputLayer.FillLayer();
+            OutputLayer = outputLayer;
+
             currentLayer.NextLayer = OutputLayer;
         }
 

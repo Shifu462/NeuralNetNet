@@ -16,6 +16,11 @@ namespace NeuralNetNet
         protected Neuron[] Neurons { get; set; }
 
         /// <summary>
+        /// Random number generator used for filling SynapseWeights with random values.
+        /// </summary>
+        protected static Random rnd = new Random();
+
+        /// <summary>
         /// Count of neurons in current layer.
         /// </summary>
         public long Count => Neurons.Length;
@@ -36,12 +41,12 @@ namespace NeuralNetNet
         /// <summary>
         /// Pointer to the previous layer in the network.
         /// </summary>
-        public Layer PreviousLayer { get; protected set; }
-        
+        public Layer PreviousLayer { get; internal set; }
+
         /// <summary>
         /// Pointer to the next layer in the network.
         /// </summary>
-        public Layer NextLayer { get; set; }
+        public Layer NextLayer { get; internal set; }
 
         /// <summary>
         /// Activation function that this layer uses.
@@ -66,7 +71,7 @@ namespace NeuralNetNet
 
         public double[] GetOutput() => NextLayer == null
                                      ? Neurons.Select(n => n.Value).ToArray()
-                                     : throw new NullReferenceException("Can't get output from hidden or input layer.");                        
+                                     : throw new NullReferenceException("Can't get output from hidden or input layer.");
 
         public void Train(double learningRate = 1, double moment = 1)
         {
@@ -96,19 +101,23 @@ namespace NeuralNetNet
             }
         }
 
-        public Layer(int neuronsCount, Layer previous)
+        public Layer(int neuronsCount, IActivation activation)
         {
-            Random rnd = new Random();
             Neurons = new Neuron[neuronsCount];
+            Activation = activation;
+        }
 
-            PreviousLayer = previous;
-
+        internal void FillLayer()
+        {
             // Check if no synapses behind this layer (input layer check)
             long synapseCount = PreviousLayer != null ? PreviousLayer.Count : 0;
 
-            for (int i = 0; i < neuronsCount; i++)
+            for (int i = 0; i < Neurons.Length; i++)
             {
                 Neuron currentNeuron = Neurons[i] = new Neuron(synapseCount);
+
+                if (PreviousLayer == null)
+                    continue;
 
                 for (int w = 0; w < currentNeuron.SynapsesWeights.Length; w++)
                     currentNeuron.SynapsesWeights[w] = rnd.NextDouble();

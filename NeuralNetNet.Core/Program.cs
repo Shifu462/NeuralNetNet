@@ -9,6 +9,7 @@ namespace NeuralNetNet
     {
         static void Main(string[] args)
         {
+            /*
             var equalTrainList = new List<TrainSet>();
 
             // Add numbers
@@ -56,7 +57,7 @@ namespace NeuralNetNet
 
             Console.WriteLine(net.Predict(20, 19)[0]);
             Console.WriteLine(net.Predict(20, 18)[0]);
-            
+            */
             Console.ReadKey();
         }
     }

@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace NeuralNetNet.NeuralNetwork
 {
-    public class Perceptron : NeuralNetwork
+    public class FeedForward : NeuralNetwork
     {
-        public Perceptron(Layer inputLayer, IEnumerable<Layer> hiddenLayers, Layer outputLayer)
+        public FeedForward(Layer inputLayer, IEnumerable<Layer> hiddenLayers, Layer outputLayer)
         {
             InputLayer = inputLayer;
             InputLayer.FillLayer();
@@ -28,7 +28,7 @@ namespace NeuralNetNet.NeuralNetwork
 
             currentLayer.NextLayer = OutputLayer;
         }
-
+        
         public override void Train(List<TrainSet> trainSetList, int maxEpoch
             , double learningRate = 1
             , double moment = 1)
@@ -40,36 +40,42 @@ namespace NeuralNetNet.NeuralNetwork
                 for (int ts = 0; ts < trainSetList.Count; ts++)
                 {
                     TrainSet currentSet = trainSetList[ts];
-                    double actual = this.Predict(currentSet.Input)[0];
-                    double error = currentSet.Output - actual; // ideal - actual
 
-                    foreach (Neuron outn in OutputLayer)
-                        outn.Delta = error * OutputLayer.Activation.Activate(outn.Value, derivative: true);
-
-                    // train each hidden layer
-                    Layer backpropLayer = OutputLayer;
-                    while ((backpropLayer = backpropLayer.PreviousLayer) != null)
-                        backpropLayer.Train(learningRate, moment);
-
-                    // Change OutputLayer weights.
-                    foreach (Neuron outNeuron in OutputLayer)
-                    {
-                        for (int s = 0; s < outNeuron.SynapsesWeights.Length; s++)
-                        {
-                            double prevNeuronValue = OutputLayer.PreviousLayer[s].Value;
-                            outNeuron.SynapsesWeights[s] += prevNeuronValue * outNeuron.Delta * learningRate;
-                        }
-                    }
+                    double error = Train(currentSet, learningRate, moment);
 
                     if (ts == 0 && ep % 1000 == 0) Console.WriteLine($"Ep #{ep} | {Math.Abs(error)}");
                 }
-
-
             }
-
         }
+        
+        protected override double Train(TrainSet currentSet, double learningRate = 1, double moment = 1)
+        {
 
-        public override double[] Predict(params double[] inputs)
+            double actual = this.Handle(currentSet.Input)[0];
+            double error = currentSet.Output - actual; // ideal - actual
+
+            foreach (BackpropNeuron outn in OutputLayer)
+                outn.Delta = error * OutputLayer.Activation.Activate(outn.Value, derivative: true);
+
+            // train each hidden layer
+            Layer backpropLayer = OutputLayer;
+            while ((backpropLayer = backpropLayer.PreviousLayer) != null)
+                backpropLayer.Train(learningRate, moment);
+
+            // Change OutputLayer weights.
+            foreach (BackpropNeuron outNeuron in OutputLayer)
+            {
+                for (int s = 0; s < outNeuron.IncomingWeights.Length; s++)
+                {
+                    double prevNeuronValue = OutputLayer.PreviousLayer[s].Value;
+                    outNeuron.IncomingWeights[s] += prevNeuronValue * outNeuron.Delta * learningRate;
+                }
+            }
+            
+            return error;
+        }
+        
+        public override double[] Handle(params double[] inputs)
         {
             if (inputs.Length != InputLayer.Count)
                 throw new ArgumentException();

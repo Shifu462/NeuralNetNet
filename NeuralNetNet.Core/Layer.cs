@@ -13,12 +13,15 @@ namespace NeuralNetNet
         /// <summary>
         /// Neurons inside of this layer.
         /// </summary>
-        protected Neuron[] Neurons { get; set; }
+        protected readonly BackpropNeuron[] Neurons;
 
         /// <summary>
-        /// Random number generator used for filling SynapseWeights with random values.
+        /// Simple indexator. Shortcut for Neuron[] Neurons.
         /// </summary>
-        protected static Random rnd = new Random();
+        public BackpropNeuron this[int index]
+        {
+            get => Neurons[index];
+        }
 
         /// <summary>
         /// Count of neurons in current layer.
@@ -26,13 +29,10 @@ namespace NeuralNetNet
         public long Count => Neurons.Length;
 
         /// <summary>
-        /// Simple indexator. Shortcut for Neuron[] Neurons.
+        /// Random number generator used for filling SynapseWeights with random values.
         /// </summary>
-        public Neuron this[int index]
-        {
-            get => Neurons[index];
-        }
-
+        protected static Random rnd = new Random();
+        
         /// <summary>
         /// So you can foreach Layer neurons.
         /// </summary>
@@ -63,12 +63,15 @@ namespace NeuralNetNet
                 double sum = 0;
 
                 for (int j = 0; j < PreviousLayer.Count; j++)
-                    sum += this[i].SynapsesWeights[j] * PreviousLayer[j].Value;
+                    sum += this[i].IncomingWeights[j] * PreviousLayer[j].Value;
 
                 Neurons[i].Value = Activation.Activate(sum);
             }
         }
 
+        /// <summary>
+        /// If it's an output layer, returns result.
+        /// </summary>
         public double[] GetOutput() => NextLayer == null
                                      ? Neurons.Select(n => n.Value).ToArray()
                                      : throw new ArgumentException("Can't get output from hidden or input layer.");
@@ -80,30 +83,30 @@ namespace NeuralNetNet
             {
                 // sum of | delta * w
                 double sum = 0;
-                foreach (Neuron nextNeuron in this.NextLayer)
+                foreach (BackpropNeuron nextNeuron in this.NextLayer)
                 {
-                    for (int w = 0; w < nextNeuron.SynapsesWeights.Length; w++)
+                    for (int w = 0; w < nextNeuron.IncomingWeights.Length; w++)
                     {
                         if (hi == w) // find synapse that connects hiddenNeuron with nextNeuron
-                            sum += nextNeuron.Delta * nextNeuron.SynapsesWeights[w];
+                            sum += nextNeuron.Delta * nextNeuron.IncomingWeights[w];
                     }
                 }
 
-                Neuron hiddenNeuron = this[hi];
+                BackpropNeuron hiddenNeuron = this[hi];
                 hiddenNeuron.Delta = sum * Activation.Activate(hiddenNeuron.Value, derivative: true);
 
                 // change weights
-                for (int sw = 0; sw < hiddenNeuron.SynapsesWeights.Length; sw++)
+                for (int sw = 0; sw < hiddenNeuron.IncomingWeights.Length; sw++)
                 {
                     double prevNeuronValue = this.PreviousLayer[sw].Value;
-                    hiddenNeuron.SynapsesWeights[sw] += prevNeuronValue * hiddenNeuron.Delta * learningRate;
+                    hiddenNeuron.IncomingWeights[sw] += prevNeuronValue * hiddenNeuron.Delta * learningRate;
                 }
             }
         }
 
         public Layer(int neuronsCount, IActivation activation)
         {
-            Neurons = new Neuron[neuronsCount];
+            Neurons = new BackpropNeuron[neuronsCount];
             Activation = activation;
         }
 
@@ -114,13 +117,13 @@ namespace NeuralNetNet
 
             for (int i = 0; i < Neurons.Length; i++)
             {
-                Neuron currentNeuron = Neurons[i] = new Neuron(synapseCount);
+                BackpropNeuron currentNeuron = Neurons[i] = new BackpropNeuron(synapseCount);
 
                 if (PreviousLayer == null)
                     continue;
 
-                for (int w = 0; w < currentNeuron.SynapsesWeights.Length; w++)
-                    currentNeuron.SynapsesWeights[w] = rnd.NextDouble();
+                for (int w = 0; w < currentNeuron.IncomingWeights.Length; w++)
+                    currentNeuron.IncomingWeights[w] = rnd.NextDouble();
 
             }
         }

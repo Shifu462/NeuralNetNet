@@ -7,7 +7,7 @@ using NeuralNetNet.NeuralNetwork;
 namespace NeuralNetNet.Tests
 {
     [TestClass]
-    public class PerceptronTest
+    public class FeedForwardTest
     {
         [TestMethod]
         public void XorTest()
@@ -24,7 +24,7 @@ namespace NeuralNetNet.Tests
                 new Layer(4, new Sigmoid())
             };
 
-            Perceptron net = new Perceptron(new Layer(2, new Sigmoid()), 
+            FeedForward net = new FeedForward(new Layer(2, new Sigmoid()), 
                                             hiddenLayers, 
                                             new Layer(1, new Sigmoid()));
 
@@ -32,7 +32,7 @@ namespace NeuralNetNet.Tests
 
             foreach (TrainSet ts in xorTrainList)
             {
-                double result = net.Predict(ts.Input)[0];
+                double result = net.Handle(ts.Input)[0];
                 double roundedResult = Math.Round(result);
                 Console.WriteLine($"{ts.Input[0]} X {ts.Input[1]} = {result}");
                 Assert.AreEqual(ts.Output, roundedResult);
@@ -59,7 +59,7 @@ namespace NeuralNetNet.Tests
                 }
             }
 
-            Perceptron net = new Perceptron(new Layer(2, new Sigmoid()),
+            FeedForward net = new FeedForward(new Layer(2, new Sigmoid()),
                                             new Layer[] { new Layer(4, new Sigmoid()) },
                                             new Layer(1, new Sigmoid()));
 
@@ -67,7 +67,7 @@ namespace NeuralNetNet.Tests
 
             foreach (TrainSet ts in equalTrainList)
             {
-                double result = net.Predict(ts.Input)[0];
+                double result = net.Handle(ts.Input)[0];
                 double roundedResult = Math.Round(result);
 
                 Assert.AreEqual(ts.Output, roundedResult);

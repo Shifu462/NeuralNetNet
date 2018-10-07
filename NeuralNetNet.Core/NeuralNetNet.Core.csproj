@@ -50,8 +50,10 @@
     <Compile Include="ActivationFunctions\Sigmoid.cs" />
     <Compile Include="NeuralNetwork\Convolutional.cs" />
     <Compile Include="Layer.cs" />
+    <Compile Include="NeuralNetwork\KohonenNetwork.cs" />
     <Compile Include="NeuralNetwork\NeuralNetwork.cs" />
-    <Compile Include="NeuralNetwork\Perceptron.cs" />
+    <Compile Include="NeuralNetwork\FeedForward.cs" />
+    <Compile Include="BackpropNeuron.cs" />
     <Compile Include="Neuron.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

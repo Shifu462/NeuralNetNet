@@ -4,8 +4,12 @@ using System.Linq;
 
 namespace NeuralNetNet.NeuralNetwork
 {
-    public class FeedForward : NeuralNetwork
+    public class FeedForward
     {
+        public Layer InputLayer { get; protected set; }
+
+        public Layer OutputLayer { get; protected set; }
+
         public FeedForward(Layer inputLayer, IEnumerable<Layer> hiddenLayers, Layer outputLayer)
         {
             InputLayer = inputLayer;
@@ -29,7 +33,7 @@ namespace NeuralNetNet.NeuralNetwork
             currentLayer.NextLayer = OutputLayer;
         }
         
-        public override void Train(List<TrainSet> trainSetList, int maxEpoch
+        public void Train(List<TrainSet> trainSetList, int maxEpoch
             , double learningRate = 1
             , double moment = 1)
         {
@@ -41,14 +45,17 @@ namespace NeuralNetNet.NeuralNetwork
                 {
                     TrainSet currentSet = trainSetList[ts];
 
-                    double error = Train(currentSet, learningRate, moment);
+                    double error = Study(currentSet, learningRate, moment);
 
                     if (ts == 0 && ep % 1000 == 0) Console.WriteLine($"Ep #{ep} | {Math.Abs(error)}");
                 }
             }
         }
         
-        protected override double Train(TrainSet currentSet, double learningRate = 1, double moment = 1)
+        /// <summary>
+        /// Trains on a single set.
+        /// </summary>
+        public double Study(TrainSet currentSet, double learningRate = 1, double moment = 1)
         {
 
             double actual = this.Handle(currentSet.Input)[0];
@@ -75,7 +82,7 @@ namespace NeuralNetNet.NeuralNetwork
             return error;
         }
         
-        public override double[] Handle(params double[] inputs)
+        public double[] Handle(params double[] inputs)
         {
             if (inputs.Length != InputLayer.Count)
                 throw new ArgumentException();
